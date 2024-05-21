@@ -73,10 +73,11 @@ shape = SubResource("RectangleShape2D_ov7u1")
 [node name="CustomerTimer" type="Timer" parent="."]
 one_shot = true
 
-[node name="OrderTimer" type="Timer" parent="."]
+[node name="SpawnTimer" type="Timer" parent="."]
+wait_time = 2.0
 one_shot = true
 
-[node name="PatienceTimer" type="Timer" parent="."]
+[node name="OrderTimer" type="Timer" parent="."]
 one_shot = true
 
 [node name="Eating2Timer" type="Timer" parent="."]
@@ -112,6 +113,7 @@ text = "make order"
 [connection signal="pressed" from="Button" to="Path2D/PathFollow2D" method="_on_button_pressed"]
 [connection signal="pressed" from="Button2" to="Path2D/PathFollow2D" method="_on_button_2_pressed"]
 [connection signal="timeout" from="CustomerTimer" to="Path2D/PathFollow2D" method="_on_customer_timer_timeout"]
+[connection signal="timeout" from="SpawnTimer" to="CustomerSpawner" method="_on_spawn_timer_timeout"]
 [connection signal="timeout" from="OrderTimer" to="Path2D/PathFollow2D" method="_on_order_timer_timeout"]
 [connection signal="timeout" from="Eating2Timer" to="Path2D/PathFollow2D" method="_on_eating_2_timer_timeout"]
 [connection signal="timeout" from="EatingTimer" to="Path2D/PathFollow2D" method="_on_eating_timer_timeout"]

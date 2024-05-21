@@ -28,10 +28,14 @@ var on = true
 @onready var eatingTimer: Timer = $"../../EatingTimer"
 @onready var eatingTimer_2: Timer = $"../../Eating2Timer"
 
+@onready var health = load("res://lives.tscn")
+
 func _ready():
 	on = false
 	buttons(0)
 	progress_ratio = 0
+	var tempHealth = health.instantiate()
+	add_child(tempHealth)
 
 func _process(delta):
 	

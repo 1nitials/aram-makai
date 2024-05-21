@@ -18,3 +18,5 @@ var counter = 0
 var counter_2 = 0
 
 var total_customers = 0
+
+var lives = 3

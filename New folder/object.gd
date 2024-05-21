@@ -11,13 +11,21 @@ var forward = true
 
 @export var speed = 0.5
 
+@onready var patienceTimer = preload("res://patience_animation.tscn")
+@onready var patienceInstantiated = false
+
 func _process(delta):
 	
 	#to make sure the customers dont overlap with each other
 	if forward == true:
 		get_parent().progress_ratio += speed * delta
-	if get_parent().progress_ratio > (1 - ((global.total_customers - 1)*0.5)):
+	if get_parent().progress_ratio >= (1 - ((global.total_customers - 1)*0.5)):
 		forward = false
+		if not patienceInstantiated:
+			var timerInstance = patienceTimer.instantiate()
+			add_child(timerInstance)
+			timerInstance.patience_start()
+			patienceInstantiated = true
 	else:
 		forward = true
 	
@@ -27,7 +35,6 @@ func _process(delta):
 			initialPos = global_position
 			offset = get_global_mouse_position() - global_position
 			global.is_dragging = true
-			
 			#this variable is to ensure that not more than one object is being dragged
 			global.dragged_objects += 1
 		if Input.is_action_pressed("click"):
@@ -42,14 +49,13 @@ func _process(delta):
 				#and table one is also not dirty
 				if is_inside_table_one && global.in_table_one == false && global.table_one_dirty == false:
 					global.in_table_one = true
-					visible = false
+					queue_free()
 					global.total_customers -= 1
-					
 					#counter to send a signal to the main.gd script
 					global.counter += 1
 				elif is_inside_table_two && global.in_table_two == false && global.table_two_dirty == false:
 					global.in_table_two = true
-					visible = false
+					queue_free()
 					global.total_customers -= 1
 					global.counter_2 += 1
 				else:
@@ -94,3 +100,7 @@ func _on_area_2d_mouse_exited():
 		draggable = false
 		global.is_mouse_busy = false
 		scale = Vector2(1, 1)
+
+func remove():
+	print("works")
+	queue_free()
