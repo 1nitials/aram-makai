@@ -7,8 +7,8 @@
 script = ExtResource("1_m0f2m")
 
 [node name="Hearts" type="Sprite2D" parent="."]
-position = Vector2(892, 590)
-scale = Vector2(0.551282, 0.554688)
+position = Vector2(907.2, 597.792)
+scale = Vector2(0.5, 0.504)
 texture = ExtResource("2_i5u0v")
 hframes = 2
 vframes = 2
@@ -16,8 +16,8 @@ region_enabled = true
 region_rect = Rect2(48, 56, 312, 256)
 
 [node name="Hearts2" type="Sprite2D" parent="."]
-position = Vector2(987, 589)
-scale = Vector2(0.555801, 0.552277)
+position = Vector2(1002.2, 596.792)
+scale = Vector2(0.5, 0.504)
 texture = ExtResource("2_i5u0v")
 hframes = 2
 vframes = 2
@@ -25,8 +25,8 @@ region_enabled = true
 region_rect = Rect2(48, 56, 312, 256)
 
 [node name="Hearts3" type="Sprite2D" parent="."]
-position = Vector2(1077, 590)
-scale = Vector2(0.551282, 0.554688)
+position = Vector2(1092.2, 597.792)
+scale = Vector2(0.5, 0.504)
 texture = ExtResource("2_i5u0v")
 hframes = 2
 vframes = 2

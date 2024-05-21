@@ -22,3 +22,4 @@ func _on_patience_timer_timeout():
 		print("Too late")
 		global.lives -= 1
 		get_parent().queue_free()
+		global.total_customers -= 1

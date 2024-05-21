@@ -1,6 +1,7 @@
-[gd_scene load_steps=9 format=3 uid="uid://b025jb4me8wpl"]
+[gd_scene load_steps=10 format=3 uid="uid://b025jb4me8wpl"]
 
 [ext_resource type="Script" path="res://main.gd" id="1_12eqn"]
+[ext_resource type="PackedScene" uid="uid://tre5e68r3exb" path="res://pause.tscn" id="1_hsqs2"]
 [ext_resource type="Texture2D" uid="uid://cn24qdtg6nq7m" path="res://icon.svg" id="2_qj3ad"]
 [ext_resource type="Script" path="res://CustomerSpawner.gd" id="4_ihf12"]
 [ext_resource type="Script" path="res://platform.gd" id="5_4u3ay"]
@@ -24,26 +25,31 @@ size = Vector2(119, 66)
 anchor_mode = 0
 editor_draw_limits = true
 
+[node name="MenuScreen" parent="Camera2D" instance=ExtResource("1_hsqs2")]
+visible = false
+
 [node name="Path2D" type="Path2D" parent="."]
+position = Vector2(0.199997, 27.5)
 curve = SubResource("Curve2D_8nxn8")
 
 [node name="PathFollow2D" type="PathFollow2D" parent="Path2D"]
-position = Vector2(849.981, 123.458)
+position = Vector2(201, 309)
 rotation = -0.00540535
-progress = 845.389
 rotates = false
 loop = false
 script = ExtResource("1_12eqn")
 
 [node name="Icon" type="Sprite2D" parent="Path2D/PathFollow2D"]
-position = Vector2(1.01073, -1.99445)
+position = Vector2(1.06507, -8.4522)
+scale = Vector2(0.764488, 0.79067)
 texture = ExtResource("2_qj3ad")
 
 [node name="Button" type="Button" parent="."]
-offset_left = 947.0
-offset_top = 90.0
-offset_right = 1054.0
-offset_bottom = 145.0
+offset_left = 947.2
+offset_top = 117.5
+offset_right = 1054.2
+offset_bottom = 172.5
+pivot_offset = Vector2(-503, 243)
 text = "customer"
 
 [node name="StaticBody2D" type="StaticBody2D" parent="Button" groups=["customer_one", "dropable"]]
@@ -51,15 +57,16 @@ position = Vector2(-947, -90)
 script = ExtResource("5_4u3ay")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Button/StaticBody2D" groups=["dropable"]]
-position = Vector2(1001, 117)
+position = Vector2(1003.8, 119.5)
 shape = SubResource("RectangleShape2D_neyi7")
 debug_color = Color(0, 0.6, 0.701961, 0.419608)
 
 [node name="Button2" type="Button" parent="."]
-offset_left = 946.0
-offset_top = 426.0
-offset_right = 1065.0
-offset_bottom = 492.0
+offset_left = 946.2
+offset_top = 453.5
+offset_right = 1065.2
+offset_bottom = 519.5
+pivot_offset = Vector2(-502, -93)
 text = "customer 2"
 
 [node name="StaticBody2D" type="StaticBody2D" parent="Button2" groups=["customer_two", "dropable"]]
@@ -67,8 +74,28 @@ position = Vector2(-946, -426)
 script = ExtResource("5_4u3ay")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Button2/StaticBody2D" groups=["dropable"]]
-position = Vector2(1005.5, 459)
+position = Vector2(1006.8, 457.5)
 shape = SubResource("RectangleShape2D_ov7u1")
+
+[node name="CustomerSpawner" type="Node2D" parent="."]
+script = ExtResource("4_ihf12")
+
+[node name="Timer" type="Timer" parent="CustomerSpawner"]
+wait_time = 5.0
+autostart = true
+
+[node name="FoodTruck" type="Sprite2D" parent="."]
+position = Vector2(184.2, 164.5)
+scale = Vector2(0.261669, 0.287805)
+texture = ExtResource("5_7bntc")
+
+[node name="Button3" type="Button" parent="."]
+offset_left = 130.2
+offset_top = 196.5
+offset_right = 258.2
+offset_bottom = 252.5
+pivot_offset = Vector2(314, 164)
+text = "make order"
 
 [node name="CustomerTimer" type="Timer" parent="."]
 one_shot = true
@@ -91,32 +118,13 @@ one_shot = true
 [node name="SeatingTimer" type="Timer" parent="."]
 one_shot = true
 
-[node name="CustomerSpawner" type="Node2D" parent="."]
-script = ExtResource("4_ihf12")
-
-[node name="Timer" type="Timer" parent="CustomerSpawner"]
-wait_time = 5.0
-autostart = true
-
-[node name="FoodTruck" type="Sprite2D" parent="."]
-position = Vector2(180, 104)
-scale = Vector2(0.4, 0.4)
-texture = ExtResource("5_7bntc")
-
-[node name="Button3" type="Button" parent="."]
-offset_left = 130.0
-offset_top = 169.0
-offset_right = 258.0
-offset_bottom = 225.0
-text = "make order"
-
 [connection signal="pressed" from="Button" to="Path2D/PathFollow2D" method="_on_button_pressed"]
 [connection signal="pressed" from="Button2" to="Path2D/PathFollow2D" method="_on_button_2_pressed"]
+[connection signal="timeout" from="CustomerSpawner/Timer" to="CustomerSpawner" method="_on_timer_timeout"]
+[connection signal="pressed" from="Button3" to="Path2D/PathFollow2D" method="_on_button_3_pressed"]
 [connection signal="timeout" from="CustomerTimer" to="Path2D/PathFollow2D" method="_on_customer_timer_timeout"]
 [connection signal="timeout" from="SpawnTimer" to="CustomerSpawner" method="_on_spawn_timer_timeout"]
 [connection signal="timeout" from="OrderTimer" to="Path2D/PathFollow2D" method="_on_order_timer_timeout"]
 [connection signal="timeout" from="Eating2Timer" to="Path2D/PathFollow2D" method="_on_eating_2_timer_timeout"]
 [connection signal="timeout" from="EatingTimer" to="Path2D/PathFollow2D" method="_on_eating_timer_timeout"]
 [connection signal="timeout" from="SeatingTimer" to="Path2D/PathFollow2D" method="_on_seating_timer_timeout"]
-[connection signal="timeout" from="CustomerSpawner/Timer" to="CustomerSpawner" method="_on_timer_timeout"]
-[connection signal="pressed" from="Button3" to="Path2D/PathFollow2D" method="_on_button_3_pressed"]

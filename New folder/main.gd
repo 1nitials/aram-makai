@@ -29,6 +29,9 @@ var on = true
 @onready var eatingTimer_2: Timer = $"../../Eating2Timer"
 
 @onready var health = load("res://lives.tscn")
+@onready var score = load("res://score.tscn")
+@onready var progress_bar = load("res://progress_bar.tscn")
+@onready var pause_menu = $"../../Camera2D/MenuScreen"
 
 func _ready():
 	on = false
@@ -36,8 +39,16 @@ func _ready():
 	progress_ratio = 0
 	var tempHealth = health.instantiate()
 	add_child(tempHealth)
+	var tempScore = score.instantiate()
+	add_child(tempScore)
+	var tempBar = progress_bar.instantiate()
+	add_child(tempBar)
+	tempBar.progress_start()
 
 func _process(delta):
+	
+	if Input.is_action_just_pressed("pause"):
+		pauseMenu()
 	
 	#player going forwards
 	if global.is_forwards == true && on == true:
@@ -75,6 +86,15 @@ func _process(delta):
 		customer_two.text = "customer 2 (seated)"
 		global.counter_2 -= 1
 
+func pauseMenu():
+	if global.paused:
+		pause_menu.hide()
+		Engine.time_scale = 1
+	else:
+		pause_menu.show()
+		Engine.time_scale = 0
+	
+	global.paused = !global.paused
 
 func _on_button_pressed():
 	
@@ -82,14 +102,14 @@ func _on_button_pressed():
 	#there is someone at the table,
 	#order hasn't been received
 	#or if they are currently not eating 
-	if progress_ratio == 0 && global.in_table_one == true && order == false && eating_one == false:
+	if progress_ratio == 0 && global.in_table_one == true && order == false && eating_one == false && !global.paused:
 		on_switch()
 		buttons(0)
 		customer_one_trigger = true
 
 func _on_button_2_pressed():
 	
-	if progress_ratio == 0 && global.in_table_two == true && order_two == false && eating_two == false:
+	if progress_ratio == 0 && global.in_table_two == true && order_two == false && eating_two == false && !global.paused:
 		on_switch()
 		buttons(0)
 		customer_two_trigger = true
@@ -97,7 +117,7 @@ func _on_button_2_pressed():
 func _on_button_3_pressed():
 	
 	#if anyone is ordering and there is no food, then make order
-	if (order == true || order_two == true) && food == 0:
+	if (order == true || order_two == true) && food == 0 && !global.paused:
 		buttons(0)
 		orderTimer.start()
 		
@@ -115,6 +135,7 @@ func _on_customer_timer_timeout():
 			print("customer paid")
 			customer_two.text = "customer 2 (dirty)"
 			global.table_two_dirty = true
+			global.customer_paid += 1
 		elif food == 1:
 			customer_two.text = "customer 2 (eating)"
 			order_button.text = "make order"
@@ -145,6 +166,7 @@ func _on_customer_timer_timeout():
 			print("customer paid")
 			customer_one.text = "customer (dirty)"
 			global.table_one_dirty = true
+			global.customer_paid += 1
 		
 		#if player has food on them
 		elif food == 1:

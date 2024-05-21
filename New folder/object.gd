@@ -8,6 +8,7 @@ var body_ref
 var offset: Vector2
 var initialPos: Vector2
 var forward = true
+var reached = false
 
 @export var speed = 0.5
 
@@ -26,11 +27,12 @@ func _process(delta):
 			add_child(timerInstance)
 			timerInstance.patience_start()
 			patienceInstantiated = true
+			reached = true
 	else:
 		forward = true
 	
 	#dragging code
-	if draggable:
+	if draggable && !global.paused:
 		if Input.is_action_just_pressed("click") && global.dragged_objects == 0:
 			initialPos = global_position
 			offset = get_global_mouse_position() - global_position
@@ -89,18 +91,14 @@ func _on_area_2d_body_exited(body):
 
 
 func _on_area_2d_mouse_entered():
-	if not global.is_dragging && global.is_mouse_busy == false:
+	if not global.is_dragging && global.is_mouse_busy == false && !global.paused && reached:
 		draggable = true
 		global.is_mouse_busy = true
 		scale = Vector2(1.025, 1.025)
 
 
 func _on_area_2d_mouse_exited():
-	if not global.is_dragging && global.is_mouse_busy == true:
+	if not global.is_dragging && global.is_mouse_busy == true && !global.paused && reached:
 		draggable = false
 		global.is_mouse_busy = false
 		scale = Vector2(1, 1)
-
-func remove():
-	print("works")
-	queue_free()
