@@ -14,7 +14,7 @@ func _on_timer_timeout():
 		wait.start()
 
 func _on_spawn_timer_timeout():
-	"var tempPath = path.instantiate()
+	var tempPath = path.instantiate()
 	add_child(tempPath)
 	global.total_customers += 1
-	print(global.total_customers)"
+	print(global.total_customers)

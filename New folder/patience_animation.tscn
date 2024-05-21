@@ -16,7 +16,7 @@ region_enabled = true
 region_rect = Rect2(19.2394, 56.7361, 726.194, 349.92)
 
 [node name="PatienceTimer" type="Timer" parent="."]
-wait_time = 0.5
+wait_time = 2.0
 one_shot = true
 
 [connection signal="timeout" from="PatienceTimer" to="." method="_on_patience_timer_timeout"]
